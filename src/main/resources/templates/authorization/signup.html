@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://bulma.io/vendor/fontawesome-free-6.5.2-web/css/all.min.css">
+</head>
+<body>
+<div class="hero is-fullheight">
+    <div class="hero-body is-justify-content-center is-align-items-center">
+        <div class="columns is-flex is-flex-direction-column box auth-form">
+            <div class="message is-danger is-hidden">
+                <div class="message-body">
+
+                </div>
+            </div>
+            <div class="field"  id="field-name">
+                <label class="label">Ваше имя</label>
+                <div class="control has-icons-left">
+                    <input class="input" type="text" placeholder="Например: Максим" id="name">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-user"></i>
+                    </span>
+                </div>
+                <p class="help is-danger is-hidden"></p>
+            </div>
+            <div class="field" id="field-username">
+                <label class="label">Имя пользователя</label>
+                <div class="control has-icons-left">
+                    <input class="input" type="text" placeholder="Например: goodboy" id="username">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-at"></i>
+                    </span>
+                </div>
+                <p class="help is-danger is-hidden"></p>
+            </div>
+            <div class="field" id="field-email">
+                <label class="label">Ваш e-mail</label>
+                <div class="control has-icons-left">
+                    <input class="input" type="email" placeholder="Например: example@example.com" id="email">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-envelope"></i>
+                    </span>
+                </div>
+                <p class="help is-danger is-hidden"></p>
+            </div>
+            <div class="field" id="field-password">
+                <label class="label">Придумайте пароль</label>
+                <div class="control has-icons-left">
+                    <input class="input" type="password" placeholder="Пароль" id="password">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-unlock"></i>
+                    </span>
+                </div>
+                <p class="help is-danger is-hidden"></p>
+            </div>
+            <div class="field" id="field-repeat-password">
+                <label class="label">Повторите пароль</label>
+                <div class="control has-icons-left">
+                    <input class="input" type="password" placeholder="Пароль" id="repeat-password">
+                    <span class="icon is-small is-left">
+                            <i class="fas fa-lock"></i>
+                          </span>
+                </div>
+                <p class="help is-danger is-hidden"></p>
+            </div>
+            <div class="button is-primary is-link mt-1" id="signup-btn">Зарегестрироваться</div>
+            <div class="has-text-centered mt-2">
+                <p class="is-size-7"> Уже есть аккаунт? <a href="/login" class="has-text-link">Войти</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/script/signup.js"></script>
+</body>
+</html>

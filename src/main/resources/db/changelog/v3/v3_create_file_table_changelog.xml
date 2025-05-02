@@ -1,0 +1,65 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="v3-1" author="A">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="file"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="file">
+            <column name="id" type="int">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="path" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="room_id" type="int">
+                <constraints referencedTableName="room" referencedColumnNames="id" foreignKeyName="room_id"/>
+            </column>
+            <column name="description" type="varchar">
+
+            </column>
+            <column name="size_kb" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="downloads" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_type_id" type="int">
+                <constraints referencedTableName="file_type" referencedColumnNames="id" foreignKeyName="file_type_id"
+                             nullable="false"
+                             deleteCascade="true"
+                />
+            </column>
+            <column name="user_id" type="int">
+                <constraints referencedTableName="file" referencedColumnNames="id" foreignKeyName="user_id"/>
+            </column>
+        </createTable>
+
+        <addAutoIncrement tableName="file" columnName="id"
+                          columnDataType="int"
+                          incrementBy="1"
+                          schemaName="public"
+                          startWith="100"
+        />
+
+    </changeSet>
+
+<!--    <changeSet id="v3-2" author="A">-->
+
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <tableIsEmpty tableName="file"/>-->
+<!--        </preConditions>-->
+
+<!--        <loadData tableName="file" file="db/data/file.csv"/>-->
+<!--    </changeSet>-->
+
+</databaseChangeLog>

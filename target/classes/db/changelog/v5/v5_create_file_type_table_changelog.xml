@@ -1,0 +1,45 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+
+    <changeSet id="v5-1" author="A">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="file_type"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="file_type">
+            <column name="id" type="int">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <addAutoIncrement tableName="file_type" columnName="id"
+                          columnDataType="int"
+                          incrementBy="1"
+                          schemaName="public"
+                          startWith="100"
+        />
+    </changeSet>
+
+    <changeSet id="v5-2" author="A">
+
+        <preConditions onFail="MARK_RAN">
+            <tableIsEmpty tableName="file_type"/>
+        </preConditions>
+
+        <loadData tableName="file_type" file="db/data/file_type.csv"/>
+    </changeSet>
+
+</databaseChangeLog>

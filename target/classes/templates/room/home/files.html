@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Комнаты</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://bulma.io/vendor/fontawesome-free-6.5.2-web/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <a href="/user/rooms" class="navbar-item">
+                    <svg width="223" height="49" viewBox="0 0 223 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16.864 8.296C15.488 8.296 14.256 8.568 13.168 9.112C12.112 9.656 11.216 10.44 10.48 11.464C9.744 12.456 9.184 13.672 8.8 15.112C8.448 16.552 8.272 18.168 8.272 19.96C8.272 22.392 8.56 24.472 9.136 26.2C9.744 27.896 10.688 29.192 11.968 30.088C13.248 30.984 14.88 31.432 16.864 31.432C18.272 31.432 19.664 31.272 21.04 30.952C22.448 30.632 23.968 30.184 25.6 29.608V35.704C24.096 36.312 22.608 36.76 21.136 37.048C19.664 37.336 18.016 37.48 16.192 37.48C12.672 37.48 9.76 36.76 7.456 35.32C5.184 33.848 3.504 31.8 2.416 29.176C1.328 26.52 0.784 23.432 0.784 19.912C0.784 17.32 1.136 14.952 1.84 12.808C2.544 10.632 3.568 8.76 4.912 7.192C6.288 5.624 7.968 4.408 9.952 3.544C11.968 2.68 14.272 2.248 16.864 2.248C18.56 2.248 20.256 2.472 21.952 2.92C23.68 3.336 25.328 3.912 26.896 4.648L24.544 10.552C23.264 9.944 21.968 9.416 20.656 8.968C19.376 8.52 18.112 8.296 16.864 8.296ZM39.4585 37H32.3065V0.519998H39.4585V37ZM70.7395 23.848C70.7395 26.024 70.4355 27.96 69.8275 29.656C69.2515 31.352 68.4035 32.792 67.2835 33.976C66.1955 35.128 64.8675 36.008 63.2995 36.616C61.7315 37.192 59.9555 37.48 57.9715 37.48C56.1475 37.48 54.4515 37.192 52.8835 36.616C51.3475 36.008 50.0195 35.128 48.8995 33.976C47.7795 32.792 46.8995 31.352 46.2595 29.656C45.6515 27.96 45.3475 26.024 45.3475 23.848C45.3475 20.936 45.8595 18.488 46.8835 16.504C47.9075 14.488 49.3795 12.952 51.2995 11.896C53.2195 10.84 55.4915 10.312 58.1155 10.312C60.5795 10.312 62.7555 10.84 64.6435 11.896C66.5315 12.952 68.0195 14.488 69.1075 16.504C70.1955 18.488 70.7395 20.936 70.7395 23.848ZM52.6435 23.848C52.6435 25.576 52.8195 27.032 53.1715 28.216C53.5555 29.368 54.1475 30.248 54.9475 30.856C55.7475 31.432 56.7875 31.72 58.0675 31.72C59.3475 31.72 60.3715 31.432 61.1395 30.856C61.9395 30.248 62.5155 29.368 62.8675 28.216C63.2515 27.032 63.4435 25.576 63.4435 23.848C63.4435 22.12 63.2515 20.68 62.8675 19.528C62.5155 18.376 61.9395 17.512 61.1395 16.936C60.3395 16.36 59.2995 16.072 58.0195 16.072C56.1315 16.072 54.7555 16.728 53.8915 18.04C53.0595 19.32 52.6435 21.256 52.6435 23.848ZM100.698 10.792V37H95.2263L94.2663 33.64H93.8823C93.3383 34.536 92.6343 35.272 91.7703 35.848C90.9383 36.392 90.0103 36.792 88.9863 37.048C87.9623 37.336 86.9063 37.48 85.8183 37.48C83.9623 37.48 82.3303 37.144 80.9223 36.472C79.5143 35.8 78.4263 34.76 77.6583 33.352C76.8903 31.944 76.5063 30.12 76.5063 27.88V10.792H83.6583V26.104C83.6583 27.96 83.9943 29.368 84.6663 30.328C85.3383 31.288 86.4103 31.768 87.8823 31.768C89.3543 31.768 90.4903 31.432 91.2903 30.76C92.1223 30.088 92.6983 29.112 93.0183 27.832C93.3703 26.552 93.5463 24.984 93.5463 23.128V10.792H100.698ZM116.501 37.48C113.589 37.48 111.205 36.344 109.349 34.072C107.525 31.768 106.613 28.392 106.613 23.944C106.613 19.464 107.541 16.072 109.397 13.768C111.253 11.464 113.685 10.312 116.693 10.312C117.941 10.312 119.045 10.488 120.005 10.84C120.965 11.16 121.781 11.608 122.453 12.184C123.157 12.76 123.749 13.416 124.229 14.152H124.469C124.373 13.64 124.261 12.904 124.133 11.944C124.005 10.952 123.941 9.944 123.941 8.92V0.519998H131.093V37H125.621L124.229 33.592H123.941C123.493 34.296 122.917 34.952 122.213 35.56C121.541 36.136 120.741 36.6 119.813 36.952C118.885 37.304 117.781 37.48 116.501 37.48ZM118.997 31.768C120.981 31.768 122.373 31.192 123.173 30.04C123.973 28.856 124.389 27.096 124.421 24.76V23.992C124.421 21.432 124.021 19.48 123.221 18.136C122.453 16.792 121.013 16.12 118.901 16.12C117.333 16.12 116.101 16.808 115.205 18.184C114.309 19.528 113.861 21.48 113.861 24.04C113.861 26.6 114.309 28.536 115.205 29.848C116.101 31.128 117.365 31.768 118.997 31.768Z" fill="black"/>
+                        <path d="M149.324 10.264C152.844 10.264 155.532 11.032 157.388 12.568C159.276 14.072 160.22 16.392 160.22 19.528V37H155.228L153.836 33.448H153.644C152.908 34.376 152.14 35.144 151.34 35.752C150.572 36.36 149.676 36.792 148.652 37.048C147.66 37.336 146.428 37.48 144.956 37.48C143.42 37.48 142.028 37.192 140.78 36.616C139.564 36.008 138.604 35.096 137.9 33.88C137.196 32.632 136.844 31.064 136.844 29.176C136.844 26.392 137.82 24.344 139.772 23.032C141.724 21.688 144.652 20.952 148.556 20.824L153.116 20.68V19.528C153.116 18.152 152.748 17.144 152.012 16.504C151.308 15.864 150.316 15.544 149.036 15.544C147.756 15.544 146.508 15.736 145.292 16.12C144.076 16.472 142.86 16.92 141.644 17.464L139.292 12.616C140.7 11.88 142.252 11.304 143.948 10.888C145.676 10.472 147.468 10.264 149.324 10.264ZM150.332 24.952C148.028 25.016 146.428 25.432 145.532 26.2C144.636 26.968 144.188 27.976 144.188 29.224C144.188 30.312 144.508 31.096 145.148 31.576C145.788 32.024 146.62 32.248 147.644 32.248C149.18 32.248 150.476 31.8 151.532 30.904C152.588 29.976 153.116 28.68 153.116 27.016V24.856L150.332 24.952ZM182.421 10.312C185.237 10.312 187.493 11.08 189.189 12.616C190.885 14.12 191.733 16.552 191.733 19.912V37H184.581V21.688C184.581 19.8 184.245 18.392 183.573 17.464C182.901 16.504 181.829 16.024 180.357 16.024C178.181 16.024 176.693 16.776 175.893 18.28C175.093 19.752 174.693 21.88 174.693 24.664V37H167.541V10.792H173.013L173.973 14.152H174.357C174.933 13.256 175.637 12.536 176.469 11.992C177.301 11.416 178.229 11 179.253 10.744C180.277 10.456 181.333 10.312 182.421 10.312ZM195.344 10.792H203.168L208.112 25.528C208.272 26.008 208.4 26.488 208.496 26.968C208.624 27.448 208.72 27.944 208.784 28.456C208.88 28.968 208.944 29.512 208.976 30.088H209.12C209.216 29.256 209.344 28.472 209.504 27.736C209.696 26.968 209.904 26.232 210.128 25.528L214.976 10.792H222.656L211.568 40.36C210.896 42.152 210.016 43.656 208.928 44.872C207.872 46.088 206.64 47 205.232 47.608C203.824 48.216 202.288 48.52 200.624 48.52C199.824 48.52 199.12 48.472 198.512 48.376C197.936 48.312 197.424 48.232 196.976 48.136V42.472C197.328 42.536 197.744 42.6 198.224 42.664C198.736 42.728 199.264 42.76 199.808 42.76C200.8 42.76 201.648 42.552 202.352 42.136C203.088 41.72 203.696 41.144 204.176 40.408C204.656 39.704 205.04 38.936 205.328 38.104L205.76 36.808L195.344 10.792Z" fill="#00D1B2"/>
+                    </svg>
+                </a>
+                <a role="button" class="navbar-burger is-dark" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                
+                </a>
+            </div>
+            <div class="navbar-menu">
+                <div class="navbar-start">
+                    <div class="navbar-item is-active">
+                        <a href="/user/rooms" class="navbar-item has-text-weight-semibold">Главная</a>
+                    </div>
+                </div>
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="field is-grouped">
+                            <a class="button is-primary is-hidden" id="upload-file-btn">
+                                <span class="icon">
+                                    <i class="fas fa-file"></i>
+                                </span>
+                                <span>Загрузить</span>
+                            </a>
+                            <a class="button is-danger" href="/logout">
+                                Выйти
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div id="upload-modal" class="modal">
+                    <div class="modal-background"></div>
+                    <div class="modal-content ">
+                        <div class="box">
+                            <p class="title is-5">Загрузка файла</p>
+                            <div class="columns">
+                                <div class="column">
+                                    <div class="field">
+                                        <label class="label">Имя файла</label>
+                                        <div class="control">
+                                            <input type="text" class="input" placeholder="Имя файла">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-12">
+                                    <div class="field">
+                                        <label for="privacy-select" class="label">Выберите уровень доступа</label>
+                                        <div class="select is-fullwidth" id="privacy-select">
+                                            <select>
+                                              <option>Выберите уровень доступа...</option>
+                                              <option>Все, у кого есть ссылка</option>
+                                              <option>Только друзья</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="columns is-centered">
+                                <div class="column is-12">
+                                    <div class="file has-name is-boxed is-fullwidth is-minwidth-100 is-link">
+                                        <label class="file-label">
+                                          <input class="file-input" type="file" name="resume" />
+                                          <span class="file-cta">
+                                            <span class="file-icon">
+                                              <i class="fas fa-cloud-upload-alt"></i>
+                                            </span>
+                                            <span class="file-label has-text-centered"> Загрузите файл </span>
+                                          </span>
+                                          <span class="file-name has-text-centered"> Здесь будет его имя </span>
+                                        </label>
+                                      </div>
+                                </div>
+                            </div>
+            
+                        </div>
+                    </div>
+                    <button class="modal-close is-large" aria-label="close"></button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-one-quarter">
+                    <aside class="menu">
+                        <p class="menu-label" th:text="${ room.name }"></p>
+                        <ul class="menu-list">
+                          <li><a class="is-active" th:href="@{/room/{roomId}/files(roomId=${room.id})}">Файлы</a></li>
+                          <li><a th:href="@{/room/{roomId}/users(roomId=${room.id})}">Участники</a></li>
+                        </ul>
+                      </aside>
+                </div>
+                <div class="column" id="files-container">
+                    <div class="button is-fullwidth is-primary upload-big-btn is-flex is-flex-direction-column is-gapless">
+                        <img src="/images/upload-icon.svg" class="white-icon" width="30px" height="30px"></img>
+                        <div class="has-text-black has-text-weight-bold">Загрузить новый файл в комнату</div>
+                    </div>
+                    <div th:each="file : ${files}">
+                        <div class="card mb-3">
+                            <div class="card-content">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <figure class="image is-48x48">
+                                            <img src="https://bulma.io/assets/images/placeholders/96x96.png" alt="txt"/>
+                                        </figure>
+                                    </div>
+                                    <div class="media-content">
+                                        <p class="title is-4" th:text="${file.name}">Имя файла</p>
+                                        <p class="subtitle is-6 has-text-weight-semibold" th:text="${file.user.username}">Имя - @username</p>
+                                    </div>
+                                </div>
+                                <div class="content">
+                                    <p th:text="${file.description}">Актуальные темки 2024. Работаем пацанчики. Деньги, бабки, тачки, P2P-арбитраж</p>
+                                </div>
+                                <div class="columns">
+                                    <div class="column">
+                                        <span class="is-size-6 has-text-weight-semibold ">Тип: </span><span class="is-size-6" th:text="${file.type}">Тип</span>
+                                    </div>
+                                    <div class="column">
+                                        <span class="is-size-6 has-text-weight-semibold ">Вес: </span><span class="is-size-6" th:text="${file.sizeKb} + ' KB'"> Kb</span>
+                                    </div>
+                                    <div class="column">
+                                        <span class="is-size-6 has-text-weight-semibold ">Скачиваний: </span><span class="is-size-6" th:text="${file.downloads}">*</span>
+                                    </div>
+                                    <div class="column is-2">
+                                        <div class="is-fullwidth has-text-right" >
+                                            <a class="button is-primary" th:href="@{/room/download/{fileId}(fileId=${file.id})}" id="save-btn">Скачать</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modal-add-room-file" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+                <div class="box">
+                    <div class="message" id="status-message">
+                        <div class="message-body is-hidden"></div>
+                    </div>
+                    <p class="title is-5">Добавление файла в комнату</p>
+                    <div id="upload-btn" class="button is-link is-flex mb-3" disabled>Загрузить файл на сервер</div>
+                    <div class="columns">
+                        <div class="column">
+                            <div class="field">
+                                <label class="label">Имя файла</label>
+                                <div class="control">
+                                    <input type="text" class="input" placeholder="Имя файла" id="file-name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-12">
+                            <div class="field">
+                                <label for="description-textarea" class="label">Описание</label>
+                                <textarea id="description-textarea" class="textarea" placeholder="Например: это очень важный файл."></textarea>
+                                <p class="has-text-right is-size-7"><span id="counter-span">0</span>/200</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns is-centered">
+                        <div class="column is-12">
+                            <div class="file has-name is-boxed is-fullwidth is-minwidth-100 is-link">
+                                <label class="file-label">
+                                  <input class="file-input" type="file" name="resume" />
+                                  <span class="file-cta">
+                                    <span class="file-icon">
+                                      <i class="fas fa-cloud-upload-alt"></i>
+                                    </span>
+                                    <span class="file-label has-text-centered"> Загрузите файл </span>
+                                  </span>
+                                  <span class="file-name has-text-centered"> Здесь будет его имя </span>
+                                </label>
+                              </div>
+                        </div>
+                    </div>
+    
+                </div>
+            </div>
+            <button class="modal-close is-large" aria-label="close"></button>
+        </div>
+    </section>
+    <script src="/script/room.js"></script>
+    <script src="/script/main.js"></script>
+</body>
+</html>

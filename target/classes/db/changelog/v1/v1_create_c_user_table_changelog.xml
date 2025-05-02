@@ -1,0 +1,50 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="v1-1" author="A">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="c_user"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="c_user">
+            <column name="id" type="int">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="varchar">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="email" type="varchar">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addAutoIncrement tableName="c_user" columnName="id"
+                          columnDataType="int"
+                          incrementBy="1"
+                          schemaName="public"
+                          startWith="100"
+        />
+
+    </changeSet>
+
+<!--    <changeSet id="v1-2" author="A">-->
+
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <tableIsEmpty tableName="c_user"/>-->
+<!--        </preConditions>-->
+
+<!--        <loadData tableName="c_user" file="db/data/c_user.csv"/>-->
+<!--    </changeSet>-->
+
+</databaseChangeLog>

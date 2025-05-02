@@ -1,0 +1,4 @@
+id,name,path,room_id,description,size_kb,file_type_id,user_id
+1,file1,/storage/1,1,kek,1337,1,2
+2,file2,/storage/2,2,lol,123,2,2
+3,file3,/storage/2,2,xxx,634,3,3

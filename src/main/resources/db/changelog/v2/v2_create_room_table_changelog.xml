@@ -1,0 +1,44 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="v2-1" author="A">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="room"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="room">
+            <column name="id" type="int">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="admin_id" type="int">
+                <constraints referencedTableName="c_user" referencedColumnNames="id" foreignKeyName="admin_id"/>
+            </column>
+        </createTable>
+
+        <addAutoIncrement tableName="room" columnName="id"
+                          columnDataType="int"
+                          incrementBy="1"
+                          schemaName="public"
+                          startWith="100"
+        />
+
+    </changeSet>
+
+<!--        <changeSet id="v2-2" author="A">-->
+
+<!--            <preConditions onFail="MARK_RAN">-->
+<!--                <tableIsEmpty tableName="room"/>-->
+<!--            </preConditions>-->
+
+<!--            <loadData tableName="room" file="db/data/room.csv"/>-->
+<!--        </changeSet>-->
+
+</databaseChangeLog>

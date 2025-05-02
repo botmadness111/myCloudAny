@@ -1,0 +1,157 @@
+@import "https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css";
+
+.navbar-start .navbar-item a:hover {
+    color: hsl(171, 100%, 41%)
+}
+
+.ml-auto {
+    margin-left: auto;
+}
+
+.ml-0 {
+    margin-left: 0;
+}
+
+.column .input {
+    margin-top: 8px;
+}
+
+.form-column {
+    padding: .35rem;
+}
+
+.auth-form {
+    width: 500px
+}
+
+.friend-card {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.friend-avatar {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+}
+
+.friend-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.friend-name {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.friend-username {
+    color: #666;
+}
+
+
+.room-card {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.room-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.room-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px 5px rgba(0, 209, 178, 0.1);
+}
+
+.room-card:hover::before {
+    opacity: 1;
+}
+
+.room-photo {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+}
+
+.room-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.room-name {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.room-owner {
+    color: #666;
+}
+
+.add-room-card {
+    background-color: hsl(171, 100%, 41%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 100px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.add-room-card:hover {
+    transform: scale(1.05);
+}
+
+.add-room-card:hover::before {
+    opacity: 1;
+}
+
+.add-room-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+
+.white-icon {
+    color: white;
+}
+
+.upload-big-btn {
+    padding: 35px 0px;
+    margin-bottom: 10px;
+}
+
+.centered-section {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

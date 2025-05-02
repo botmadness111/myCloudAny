@@ -1,0 +1,3 @@
+"""
+Cloudany FastAPI Application
+""" 
