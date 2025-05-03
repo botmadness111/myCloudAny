@@ -13,7 +13,7 @@ class FileTypeResponse(FileTypeBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class FileBase(BaseModel):
@@ -35,11 +35,11 @@ class FileResponse(FileBase):
     user: UserResponse
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class FileDetailResponse(FileResponse):
     type: FileTypeResponse
 
     class Config:
-        orm_mode = True 
+        from_attributes = True 
