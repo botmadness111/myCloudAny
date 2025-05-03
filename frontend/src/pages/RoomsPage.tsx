@@ -4,7 +4,6 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { RoomList } from '../components/RoomList';
 import { rooms, auth } from '../services/api';
-import { Room } from '../types';
 
 export const RoomsPage: React.FC = () => {
   const navigate = useNavigate();

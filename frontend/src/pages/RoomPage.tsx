@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom';
 import { Box, Button, Typography, CircularProgress, Snackbar, Alert } from '@mui/material';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { FileList } from '../components/FileList';
-import { files, auth } from '../services/api';
+import { rooms } from '../services/api';
+import { UserList } from '../components/UserList';
 import { FileData, RoomDetailResponse } from '../types';
 import { AxiosResponse } from 'axios';
 

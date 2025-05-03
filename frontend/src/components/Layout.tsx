@@ -19,16 +19,19 @@ import {
   Person as PersonIcon,
   ExitToApp as LogoutIcon,
 } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { AnimatedButton } from './AnimatedButton';
+import { useAuth } from '../contexts/AuthContext';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const theme = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
+  const { isAuthenticated, logout } = useAuth();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -39,6 +42,11 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     localStorage.removeItem('token');
     navigate('/login');
   };
+
+  if (!isAuthenticated && !isAuthPage) {
+    navigate('/login');
+    return null;
+  }
 
   const drawerContent = (
     <Box>

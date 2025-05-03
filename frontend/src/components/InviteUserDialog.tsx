@@ -7,7 +7,6 @@ import {
   TextField,
   Button,
   Box,
-  Typography,
 } from '@mui/material';
 import { rooms } from '../services/api';
 
