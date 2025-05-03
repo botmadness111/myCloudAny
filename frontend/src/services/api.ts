@@ -12,17 +12,26 @@ api.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+  console.log('Request:', config.method?.toUpperCase(), config.url);
   return config;
 });
 
 // Интерцептор для обработки ответов
 api.interceptors.response.use(
   (response) => {
+    console.log('Response:', response.status, response.config.url);
     return response;
   },
   (error) => {
-    console.error('Ошибка в ответе:', error);
+    console.error('API Error:', {
+      url: error.config?.url,
+      method: error.config?.method,
+      status: error.response?.status,
+      data: error.response?.data
+    });
+
     if (error.response?.status === 401) {
+      console.log('Unauthorized, redirecting to login...');
       localStorage.removeItem('token');
       window.location.href = '/login';
     }
