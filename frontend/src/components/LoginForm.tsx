@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, TextField, Typography, Container } from '@mui/material';
+import { Box, Button, TextField, Typography, Container, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../services/api';
 import { LoginData } from '../types';
@@ -13,6 +13,7 @@ export const LoginForm: React.FC = () => {
     password: '',
   });
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -22,20 +23,31 @@ export const LoginForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
+    
     try {
-      console.log('Отправка данных для входа:', formData);
+      console.log('Attempting login...');
       const response = await auth.login(formData);
-      console.log('Ответ от сервера:', response.data);
-      await login(response.data.access_token);
-      navigate('/rooms');
+      console.log('Login response:', response.data);
+      
+      if (response.data.access_token) {
+        console.log('Token received, logging in...');
+        await login(response.data.access_token);
+        console.log('Login successful, navigating to /rooms');
+        navigate('/rooms');
+      } else {
+        throw new Error('No access token received');
+      }
     } catch (err: any) {
-      console.error('Ошибка при входе:', err);
+      console.error('Login error:', err);
       if (err.response) {
-        console.error('Детали ошибки:', err.response.data);
+        console.error('Error details:', err.response.data);
         setError(err.response.data.detail || 'Ошибка при входе в систему');
       } else {
         setError('Не удалось подключиться к серверу');
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -64,6 +76,7 @@ export const LoginForm: React.FC = () => {
             autoFocus
             value={formData.username}
             onChange={handleChange}
+            disabled={isLoading}
           />
           <TextField
             margin="normal"
@@ -76,6 +89,7 @@ export const LoginForm: React.FC = () => {
             autoComplete="current-password"
             value={formData.password}
             onChange={handleChange}
+            disabled={isLoading}
           />
           {error && (
             <Typography color="error" sx={{ mt: 1 }}>
@@ -87,13 +101,16 @@ export const LoginForm: React.FC = () => {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            disabled={isLoading}
+            startIcon={isLoading ? <CircularProgress size={20} /> : null}
           >
-            Войти
+            {isLoading ? 'Вход...' : 'Войти'}
           </Button>
           <Button
             fullWidth
             variant="text"
             onClick={() => navigate('/register')}
+            disabled={isLoading}
           >
             Нет аккаунта? Зарегистрироваться
           </Button>

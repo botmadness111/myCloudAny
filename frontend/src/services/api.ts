@@ -2,8 +2,8 @@ import axios from 'axios';
 import { AuthResponse, Room, FileData } from '../types';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: true, // Добавляем для работы с куками
+  baseURL: 'https://cloudanypython-1.onrender.com',
+  withCredentials: true,
 });
 
 // Интерцептор для добавления токена к запросам
@@ -15,14 +15,17 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Интерцептор для логирования ответов
+// Интерцептор для обработки ответов
 api.interceptors.response.use(
   (response) => {
-    console.log('Ответ от сервера:', response);
     return response;
   },
   (error) => {
     console.error('Ошибка в ответе:', error);
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    }
     return Promise.reject(error);
   }
 );
