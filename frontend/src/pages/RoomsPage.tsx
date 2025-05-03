@@ -53,6 +53,10 @@ export const RoomsPage: React.FC = () => {
     }
   };
 
+  const handleCreateRoom = () => {
+    navigate('/rooms/create');
+  };
+
   if (isLoading) {
     return (
       <Box sx={{ p: 3 }}>
@@ -79,7 +83,7 @@ export const RoomsPage: React.FC = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => navigate('/rooms/create')}
+          onClick={handleCreateRoom}
         >
           Создать комнату
         </Button>

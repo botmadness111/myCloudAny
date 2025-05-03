@@ -9,11 +9,13 @@ import {
   Tooltip,
   Fade,
   Grow,
+  Chip,
 } from '@mui/material';
 import {
   Edit as EditIcon,
   PersonAdd as PersonAddIcon,
   Delete as DeleteIcon,
+  People as PeopleIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -57,6 +59,8 @@ export const RoomList: React.FC<RoomListProps> = ({
     e.stopPropagation();
     if (onEdit) {
       onEdit(room);
+    } else {
+      navigate(`/rooms/edit/${room.id}`);
     }
   };
 
@@ -93,7 +97,19 @@ export const RoomList: React.FC<RoomListProps> = ({
             }}
           >
             <ListItemText
-              primary={room.name}
+              primary={
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  {room.name}
+                  <Chip
+                    icon={<PeopleIcon />}
+                    label={`${room.users?.length || 0} участников`}
+                    size="small"
+                    color="primary"
+                    variant="outlined"
+                    sx={{ ml: 1 }}
+                  />
+                </Box>
+              }
               secondary={room.description}
             />
             <ListItemSecondaryAction>

@@ -67,8 +67,8 @@ function App() {
                 <Route index element={<Navigate to="/rooms" replace />} />
                 <Route path="rooms" element={<RoomsPage />} />
                 <Route path="rooms/create" element={<CreateRoomPage />} />
+                <Route path="rooms/edit/:id" element={<EditRoomPage />} />
                 <Route path="room/:id" element={<RoomPage />} />
-                <Route path="room/:id/edit" element={<EditRoomPage />} />
                 <Route path="profile" element={<ProfilePage />} />
               </Route>
             </Routes>
