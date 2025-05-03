@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import uvicorn
+import os
 
 from app.routers import rooms, users, files, auth
 from app.database import init_db
@@ -18,7 +19,8 @@ app.add_middleware(
 )
 
 # Подключение статических файлов
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
+static_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "app", "static")
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 # Подключение роутеров
 app.include_router(auth.router)
