@@ -10,6 +10,9 @@ import {
   Fade,
   Grow,
   Chip,
+  Card,
+  CardContent,
+  Typography,
 } from '@mui/material';
 import {
   Edit as EditIcon,
@@ -28,6 +31,7 @@ interface RoomListProps {
   onRoomClick?: (roomId: number) => void;
   onEdit?: (room: Room) => void;
   onAddUser?: (room: Room) => void;
+  showControls?: boolean;
 }
 
 export const RoomList: React.FC<RoomListProps> = ({ 
@@ -35,13 +39,14 @@ export const RoomList: React.FC<RoomListProps> = ({
   onRoomClick,
   onEdit,
   onAddUser,
+  showControls = true
 }) => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
   const deleteMutation = useMutation({
-    mutationFn: (roomId: number) => api.delete(`/rooms/${roomId}`),
+    mutationFn: (roomId: number) => api.delete(`/room/${roomId}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['rooms'] });
     },
@@ -79,77 +84,75 @@ export const RoomList: React.FC<RoomListProps> = ({
   };
 
   return (
-    <List>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
       {rooms.map((room, index) => (
         <Grow in={true} timeout={500} key={room.id} style={{ transitionDelay: `${index * 100}ms` }}>
-          <ListItem
-            onClick={() => handleRoomClick(room.id)}
-            sx={{
+          <Card 
+            sx={{ 
               cursor: 'pointer',
+              transition: 'all 0.2s ease-in-out',
               '&:hover': {
-                backgroundColor: 'action.hover',
                 transform: 'scale(1.01)',
-                transition: 'all 0.2s ease-in-out',
+                boxShadow: 3,
               },
-              mb: 1,
-              borderRadius: 1,
-              boxShadow: 1,
             }}
+            onClick={() => handleRoomClick(room.id)}
           >
-            <ListItemText
-              primary={
+            <CardContent>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  {room.name}
+                  <Typography variant="h6" component="div">
+                    {room.name}
+                  </Typography>
                   <Chip
                     icon={<PeopleIcon />}
                     label={`${room.users?.length || 0} участников`}
                     size="small"
                     color="primary"
                     variant="outlined"
-                    sx={{ ml: 1 }}
                   />
                 </Box>
-              }
-              secondary={room.description}
-            />
-            <ListItemSecondaryAction>
-              {room.admin_id === user?.id && (
-                <Fade in={true} timeout={500}>
-                  <Box sx={{ display: 'flex', gap: 1 }}>
-                    <Tooltip title="Редактировать комнату">
-                      <IconButton
-                        onClick={(e) => handleEdit(e, room)}
-                        size="small"
-                        color="primary"
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Добавить пользователя">
-                      <IconButton
-                        onClick={(e) => handleAddUser(e, room)}
-                        size="small"
-                        color="primary"
-                      >
-                        <PersonAddIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Удалить комнату">
-                      <IconButton
-                        onClick={(e) => handleDelete(e, room.id)}
-                        size="small"
-                        color="error"
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </Tooltip>
+                {showControls && (
+                  <Box>
+                    <IconButton 
+                      size="small" 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEdit(e, room);
+                      }}
+                      sx={{ mr: 1 }}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton 
+                      size="small" 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddUser(e, room);
+                      }}
+                    >
+                      <PersonAddIcon />
+                    </IconButton>
+                    <IconButton
+                      size="small"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(e, room.id);
+                      }}
+                      color="error"
+                    >
+                      <DeleteIcon />
+                    </IconButton>
                   </Box>
-                </Fade>
-              )}
-            </ListItemSecondaryAction>
-          </ListItem>
+                )}
+              </Box>
+              <Typography variant="body2" color="text.secondary">
+                {room.description || 'Нет описания'}
+              </Typography>
+            </CardContent>
+          </Card>
         </Grow>
       ))}
-    </List>
+    </Box>
   );
 }; 

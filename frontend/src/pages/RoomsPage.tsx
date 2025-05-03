@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button, Alert, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
+import { Box, Typography, Button, Alert, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Tabs, Tab, Divider } from '@mui/material';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { RoomList } from '../components/RoomList';
 import { rooms } from '../services/api';
 import { Room } from '../types';
+import { useAuth } from '../contexts/AuthContext';
 
 export const RoomsPage: React.FC = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { user } = useAuth();
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const [isAddUserDialogOpen, setIsAddUserDialogOpen] = useState(false);
   const [username, setUsername] = useState('');
+  const [activeTab, setActiveTab] = useState(0);
 
   const { data: roomsData, isLoading, error } = useQuery({
     queryKey: ['rooms'],
@@ -57,6 +60,10 @@ export const RoomsPage: React.FC = () => {
     navigate('/rooms/create');
   };
 
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setActiveTab(newValue);
+  };
+
   if (isLoading) {
     return (
       <Box sx={{ p: 3 }}>
@@ -76,6 +83,9 @@ export const RoomsPage: React.FC = () => {
     );
   }
 
+  const personalRooms = roomsData?.filter(room => room.admin_id === user?.id) || [];
+  const invitedRooms = roomsData?.filter(room => room.admin_id !== user?.id) || [];
+
   return (
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
@@ -88,17 +98,42 @@ export const RoomsPage: React.FC = () => {
           Создать комнату
         </Button>
       </Box>
-      {roomsData && roomsData.length > 0 ? (
-        <RoomList
-          rooms={roomsData}
-          onRoomClick={(roomId) => navigate(`/room/${roomId}`)}
-          onEdit={handleEditRoom}
-          onAddUser={handleAddUser}
-        />
+
+      <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
+        <Tabs value={activeTab} onChange={handleTabChange} aria-label="room tabs">
+          <Tab label={`Мои комнаты (${personalRooms.length})`} />
+          <Tab label={`Приглашенные комнаты (${invitedRooms.length})`} />
+        </Tabs>
+      </Box>
+
+      {activeTab === 0 ? (
+        personalRooms.length > 0 ? (
+          <RoomList
+            rooms={personalRooms}
+            onRoomClick={(roomId) => navigate(`/room/${roomId}`)}
+            onEdit={handleEditRoom}
+            onAddUser={handleAddUser}
+            showControls={true}
+          />
+        ) : (
+          <Alert severity="info">
+            У вас пока нет личных комнат. Создайте новую комнату, нажав на кнопку выше.
+          </Alert>
+        )
       ) : (
-        <Alert severity="info">
-          У вас пока нет комнат. Создайте новую комнату, нажав на кнопку выше.
-        </Alert>
+        invitedRooms.length > 0 ? (
+          <RoomList
+            rooms={invitedRooms}
+            onRoomClick={(roomId) => navigate(`/room/${roomId}`)}
+            onEdit={handleEditRoom}
+            onAddUser={handleAddUser}
+            showControls={false}
+          />
+        ) : (
+          <Alert severity="info">
+            У вас пока нет приглашенных комнат.
+          </Alert>
+        )
       )}
 
       <Dialog open={isAddUserDialogOpen} onClose={() => setIsAddUserDialogOpen(false)}>
