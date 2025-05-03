@@ -2,7 +2,7 @@ import axios from 'axios';
 import { AuthResponse, Room, FileData } from '../types';
 
 const api = axios.create({
-  baseURL: 'https://cloudanypython-1.onrender.com',
+  baseURL: 'https://cloudanypython.onrender.com',
   withCredentials: true,
 });
 

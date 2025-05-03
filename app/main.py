@@ -12,7 +12,6 @@ app = FastAPI(title="Cloudany")
 # Получаем разрешенные домены из переменных окружения
 CORS_ORIGINS = [
     "https://cloudanypython-1.onrender.com",  # Фронтенд на Render
-    "http://localhost:5173",  # Локальная разработка
 ]
 
 # CORS настройки
