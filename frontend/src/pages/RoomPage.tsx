@@ -5,21 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { FileList } from '../components/FileList';
 import { UserList } from '../components/UserList';
 import { auth, files } from '../services/api';
-import { FileData } from '../types';
-
-interface Room {
-  id: number;
-  name: string;
-  description: string;
-  admin_id: number;
-  files: Array<{
-    id: number;
-    name: string;
-    size: number;
-    uploaded_at: string;
-    uploaded_by: number;
-  }>;
-}
+import { RoomDetailResponse } from '../types';
 
 export const RoomPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -38,7 +24,7 @@ export const RoomPage: React.FC = () => {
     queryFn: async () => {
       try {
         const response = await files.getAll(Number(id));
-        return response.data;
+        return response.data as RoomDetailResponse;
       } catch (err) {
         console.error('Ошибка при получении данных:', err);
         throw err;

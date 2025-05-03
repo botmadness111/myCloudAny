@@ -4,13 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { RoomList } from '../components/RoomList';
 import { rooms } from '../services/api';
-
-interface Room {
-  id: number;
-  name: string;
-  description: string;
-  admin_id: number;
-}
+import { Room } from '../types';
 
 export const RoomsPage: React.FC = () => {
   const navigate = useNavigate();
