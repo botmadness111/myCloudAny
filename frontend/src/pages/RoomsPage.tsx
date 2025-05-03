@@ -1,20 +1,19 @@
-import React, { useEffect } from 'react';
-import { Box, Button, Typography, CircularProgress } from '@mui/material';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import React from 'react';
+import { Box, Typography, Button } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { RoomList } from '../components/RoomList';
 import { rooms, auth } from '../services/api';
 
+interface Room {
+  id: number;
+  name: string;
+  description: string;
+  admin_id: number;
+}
+
 export const RoomsPage: React.FC = () => {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      navigate('/login');
-    }
-  }, [navigate]);
 
   const { data: currentUser } = useQuery({
     queryKey: ['currentUser'],
@@ -24,42 +23,17 @@ export const RoomsPage: React.FC = () => {
   const { data: roomsData, isLoading, error } = useQuery({
     queryKey: ['rooms'],
     queryFn: async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        navigate('/login');
-        return [];
-      }
-
-      console.log('Токен:', token);
-      try {
-        const response = await rooms.getAll();
-        console.log('Ответ от сервера:', response);
-        if (!response.data) {
-          console.log('Нет данных в ответе');
-          return [];
-        }
-        return response.data;
-      } catch (err) {
-        console.error('Ошибка при запросе:', err);
-        if ((err as any)?.response?.status === 401) {
-          localStorage.removeItem('token');
-          navigate('/login');
-        }
-        throw err;
-      }
+      const response = await rooms.getAll();
+      return response.data.map((room: Room) => ({
+        ...room,
+        description: room.description || '',
+      }));
     },
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: (id: number) => rooms.delete(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['rooms'] });
-    },
-  });
-
-  const handleDelete = (id: number) => {
+  const handleDelete = (roomId: number) => {
     if (window.confirm('Вы уверены, что хотите удалить эту комнату?')) {
-      deleteMutation.mutate(id);
+      rooms.delete(roomId);
     }
   };
 
@@ -68,28 +42,12 @@ export const RoomsPage: React.FC = () => {
   };
 
   if (isLoading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-        <CircularProgress />
-      </Box>
-    );
+    return <Typography>Загрузка...</Typography>;
   }
 
   if (error) {
-    console.error('Ошибка в компоненте:', error);
-    return (
-      <Box sx={{ mt: 4, textAlign: 'center' }}>
-        <Typography color="error" variant="h6">
-          Ошибка при загрузке комнат
-        </Typography>
-        <Typography color="text.secondary">
-          Пожалуйста, попробуйте перезагрузить страницу
-        </Typography>
-      </Box>
-    );
+    return <Typography color="error">Ошибка при загрузке комнат</Typography>;
   }
-
-  console.log('Данные комнат:', roomsData);
 
   return (
     <Box>
@@ -103,27 +61,13 @@ export const RoomsPage: React.FC = () => {
           Создать комнату
         </Button>
       </Box>
-      {Array.isArray(roomsData) && roomsData.length > 0 ? (
+      {roomsData && roomsData.length > 0 ? (
         <RoomList
           rooms={roomsData}
-          onDelete={handleDelete}
-          onEdit={handleEdit}
-          currentUserId={currentUser?.id}
+          onRoomClick={(roomId) => navigate(`/room/${roomId}`)}
         />
       ) : (
-        <Box sx={{ mt: 4, textAlign: 'center' }}>
-          <Typography variant="h6" color="text.secondary">
-            У вас пока нет комнат
-          </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => navigate('/rooms/create')}
-            sx={{ mt: 2 }}
-          >
-            Создать первую комнату
-          </Button>
-        </Box>
+        <Typography>У вас пока нет комнат</Typography>
       )}
     </Box>
   );

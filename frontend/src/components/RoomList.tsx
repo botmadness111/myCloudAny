@@ -7,16 +7,17 @@ import {
   Box,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { rooms } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 
+interface Room {
+  id: number;
+  name: string;
+  description: string;
+  admin_id: number;
+}
+
 interface RoomListProps {
-  rooms: Array<{
-    id: number;
-    name: string;
-    description: string;
-    admin_id: number;
-  }>;
+  rooms: Room[];
   onRoomClick?: (roomId: number) => void;
 }
 
@@ -37,8 +38,8 @@ export const RoomList: React.FC<RoomListProps> = ({ rooms, onRoomClick }) => {
       {rooms.map((room) => (
         <ListItem
           key={room.id}
-          button
           onClick={() => handleRoomClick(room.id)}
+          sx={{ cursor: 'pointer' }}
         >
           <ListItemText
             primary={room.name}

@@ -3,10 +3,9 @@ import { useParams } from 'react-router-dom';
 import { Box, Button, Typography, CircularProgress, Snackbar, Alert } from '@mui/material';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { FileList } from '../components/FileList';
-import { rooms } from '../services/api';
 import { UserList } from '../components/UserList';
-import { FileData, RoomDetailResponse } from '../types';
-import { AxiosResponse } from 'axios';
+import { auth, files } from '../services/api';
+import { FileData } from '../types';
 
 export const RoomPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,9 +24,6 @@ export const RoomPage: React.FC = () => {
     queryFn: async () => {
       try {
         const response = await files.getAll(Number(id));
-        console.log('Полный ответ от сервера:', response);
-        console.log('Данные комнаты:', response.data);
-        console.log('Файлы в комнате:', response.data?.files);
         return response.data;
       } catch (err) {
         console.error('Ошибка при получении данных:', err);
@@ -36,7 +32,7 @@ export const RoomPage: React.FC = () => {
     },
   });
 
-  const deleteMutation = useMutation<AxiosResponse, Error, number>({
+  const deleteMutation = useMutation({
     mutationFn: (fileId: number) => files.delete(Number(id), fileId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['files', id] });
@@ -44,26 +40,21 @@ export const RoomPage: React.FC = () => {
     },
   });
 
-  const downloadMutation = useMutation<AxiosResponse, Error, number>({
+  const downloadMutation = useMutation({
     mutationFn: (fileId: number) => files.download(Number(id), fileId),
     onSuccess: (response) => {
       try {
-        console.log('Заголовки ответа:', response.headers);
         const contentDisposition = response.headers['content-disposition'];
-        console.log('Content-Disposition:', contentDisposition);
         let filename = 'file';
         
         if (contentDisposition) {
           const matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition);
-          console.log('Matches:', matches);
           if (matches != null && matches[1]) {
             filename = matches[1].replace(/['"]/g, '');
           }
         }
 
         const contentType = response.headers['content-type'];
-        console.log('Content-Type:', contentType);
-        
         const blob = new Blob([response.data], { type: contentType });
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
@@ -86,13 +77,11 @@ export const RoomPage: React.FC = () => {
     }
   });
 
-  const uploadMutation = useMutation<AxiosResponse<FileData>, Error, File>({
+  const uploadMutation = useMutation({
     mutationFn: (file: File) => files.upload(Number(id), file),
     onSuccess: () => {
-      console.log('Файл успешно загружен');
       queryClient.invalidateQueries({ queryKey: ['files', id] });
       queryClient.invalidateQueries({ queryKey: ['room', id] });
-      queryClient.invalidateQueries({ queryKey: ['room'] });
     },
     onError: (error) => {
       console.error('Ошибка при загрузке файла:', error);
@@ -102,7 +91,6 @@ export const RoomPage: React.FC = () => {
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      console.log('Загрузка файла:', file);
       uploadMutation.mutate(file);
     }
   };
@@ -122,12 +110,8 @@ export const RoomPage: React.FC = () => {
   }
 
   if (error) {
-    console.error('Ошибка при загрузке данных:', error);
     return <Typography color="error">Ошибка при загрузке файлов</Typography>;
   }
-
-  console.log('Текущие данные комнаты:', roomData);
-  console.log('Текущие файлы:', roomData?.files);
 
   return (
     <Box>

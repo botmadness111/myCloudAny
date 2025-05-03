@@ -11,7 +11,6 @@ import {
   ListItemText,
   Toolbar,
   Typography,
-  useTheme,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -31,16 +30,11 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout: handleLogout } = useAuth();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
   };
 
   if (!isAuthenticated && !isAuthPage) {

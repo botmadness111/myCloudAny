@@ -1,22 +1,15 @@
 import axios from 'axios';
-import { AuthResponse, LoginData, RegisterData, Room, User, FileData, RoomDetailResponse } from '../types';
-
-const API_URL = 'http://localhost:8000';
+import { AuthResponse, Room, FileData } from '../types';
 
 const api = axios.create({
-  baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 // Интерцептор для добавления токена к запросам
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
-  console.log('Токен в интерцепторе:', token);
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
-    console.log('Заголовки запроса:', config.headers);
   }
   return config;
 });
@@ -35,23 +28,16 @@ api.interceptors.response.use(
 
 // Аутентификация
 export const auth = {
-  login: async (data: LoginData) => {
-    const formData = new FormData();
-    formData.append('username', data.username);
-    formData.append('password', data.password);
-    formData.append('grant_type', 'password');
-    formData.append('scope', '');
-    formData.append('client_id', '');
-    formData.append('client_secret', '');
-    
-    return api.post('/token', formData, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    });
+  login: async (data: { username: string; password: string }) => {
+    const response = await api.post<AuthResponse>('/token', data);
+    return response;
   },
-  register: (data: RegisterData) => api.post('/register', data),
-  getCurrentUser: () => api.get<User>('/users/me'),
+  register: (data: { username: string; email: string; password: string }) => {
+    return api.post('/register', data);
+  },
+  getCurrentUser: () => {
+    return api.get('/users/me');
+  },
 };
 
 // Работа с комнатами
@@ -70,14 +56,10 @@ export const rooms = {
 
 // Работа с файлами
 export const files = {
-  getAll: (roomId: number) => {
-    console.log('Получение файлов для комнаты:', roomId);
-    return api.get<RoomDetailResponse>(`/room/${roomId}/files`);
-  },
+  getAll: (roomId: number) => api.get<Room>(`/room/${roomId}/files`),
   upload: (roomId: number, file: File) => {
-    console.log('Загрузка файла в комнату:', roomId, file);
     const formData = new FormData();
-    formData.append('file', file as unknown as Blob);
+    formData.append('file', file);
     formData.append('room_id', roomId.toString());
     return api.post<FileData>('/room/upload', formData, {
       headers: {
@@ -92,7 +74,5 @@ export const files = {
       headers: {
         'Accept': '*/*',
       },
-      transformResponse: [(data) => data],
-      validateStatus: (status) => status === 200,
     }),
 }; 
