@@ -7,7 +7,8 @@ class Room(Base):
     __tablename__ = "rooms"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, index=True)
+    name = Column(String(100), index=True)  # Максимальная длина названия - 100 символов
+    description = Column(String(500), nullable=True)  # Максимальная длина описания - 500 символов
     admin_id = Column(Integer, ForeignKey("users.id"))
     
     # Отношения

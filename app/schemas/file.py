@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime
+from app.schemas.user import UserResponse
 
 
 class FileTypeBase(BaseModel):
@@ -31,6 +32,7 @@ class FileResponse(FileBase):
     type_id: int
     user_id: int
     room_id: int
+    user: UserResponse
 
     class Config:
         orm_mode = True

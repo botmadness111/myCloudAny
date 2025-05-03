@@ -43,4 +43,9 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: Optional[str] = None
-    user_id: Optional[int] = None 
+    user_id: Optional[int] = None
+
+
+class PasswordUpdate(BaseModel):
+    old_password: str
+    new_password: str = Field(..., min_length=8) 

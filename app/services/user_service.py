@@ -67,4 +67,26 @@ def authenticate_user(db: Session, username: str, password: str) -> Optional[Use
         return None
     if not verify_password(password, user.hashed_password):
         return None
+    return user
+
+
+def update_password(db: Session, user_id: int, old_password: str, new_password: str) -> User:
+    # Получаем пользователя
+    user = get_user_by_id(db, user_id)
+    
+    # Проверяем старый пароль
+    if not verify_password(old_password, user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Incorrect old password"
+        )
+    
+    # Хэшируем новый пароль
+    hashed_password = get_password_hash(new_password)
+    
+    # Обновляем пароль
+    user.hashed_password = hashed_password
+    db.commit()
+    db.refresh(user)
+    
     return user 

@@ -1,4 +1,4 @@
-#!/root/projects/Cloudany-master/.venv/bin/python3
+#!/Users/andr.korolev/Desktop/pythonBack/Cloudany-master/.venv/bin/python3.13
 # -*- coding: utf-8 -*-
 import re
 import sys
