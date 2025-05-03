@@ -24,7 +24,7 @@ export const EditRoomPage: React.FC = () => {
     description: '',
   });
 
-  const { data: room, isLoading, error: fetchError } = useQuery({
+  const { isLoading, error: fetchError } = useQuery({
     queryKey: ['room', id],
     queryFn: async () => {
       if (!id) throw new Error('ID комнаты не указан');
