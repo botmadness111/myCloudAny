@@ -1,6 +1,6 @@
-import React from 'react';
-import { Box, Typography, Button, Alert } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
+import React, { useState } from 'react';
+import { Box, Typography, Button, Alert, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { RoomList } from '../components/RoomList';
 import { rooms } from '../services/api';
@@ -8,6 +8,10 @@ import { Room } from '../types';
 
 export const RoomsPage: React.FC = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
+  const [isAddUserDialogOpen, setIsAddUserDialogOpen] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
 
   const { data: roomsData, isLoading, error } = useQuery({
     queryKey: ['rooms'],
@@ -21,6 +25,33 @@ export const RoomsPage: React.FC = () => {
       }));
     },
   });
+
+  const addUserMutation = useMutation({
+    mutationFn: async ({ roomId, email }: { roomId: number; email: string }) => {
+      const response = await rooms.addUser(roomId, email);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['rooms'] });
+      setIsAddUserDialogOpen(false);
+      setUserEmail('');
+    },
+  });
+
+  const handleEditRoom = (room: Room) => {
+    navigate(`/rooms/edit/${room.id}`);
+  };
+
+  const handleAddUser = (room: Room) => {
+    setSelectedRoom(room);
+    setIsAddUserDialogOpen(true);
+  };
+
+  const handleAddUserSubmit = () => {
+    if (selectedRoom && userEmail) {
+      addUserMutation.mutate({ roomId: selectedRoom.id, email: userEmail });
+    }
+  };
 
   if (isLoading) {
     return (
@@ -57,12 +88,40 @@ export const RoomsPage: React.FC = () => {
         <RoomList
           rooms={roomsData}
           onRoomClick={(roomId) => navigate(`/room/${roomId}`)}
+          onEdit={handleEditRoom}
+          onAddUser={handleAddUser}
         />
       ) : (
         <Alert severity="info">
           У вас пока нет комнат. Создайте новую комнату, нажав на кнопку выше.
         </Alert>
       )}
+
+      <Dialog open={isAddUserDialogOpen} onClose={() => setIsAddUserDialogOpen(false)}>
+        <DialogTitle>Добавить пользователя в комнату</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Email пользователя"
+            type="email"
+            fullWidth
+            value={userEmail}
+            onChange={(e) => setUserEmail(e.target.value)}
+            error={addUserMutation.isError}
+            helperText={addUserMutation.isError ? 'Ошибка при добавлении пользователя' : ''}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setIsAddUserDialogOpen(false)}>Отмена</Button>
+          <Button 
+            onClick={handleAddUserSubmit}
+            disabled={addUserMutation.isPending || !userEmail}
+          >
+            Добавить
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }; 

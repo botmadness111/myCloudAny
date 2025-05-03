@@ -5,25 +5,45 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   Box,
+  IconButton,
+  Tooltip,
+  Fade,
+  Grow,
 } from '@mui/material';
+import {
+  Edit as EditIcon,
+  PersonAdd as PersonAddIcon,
+  Delete as DeleteIcon,
+} from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-
-interface Room {
-  id: number;
-  name: string;
-  description: string;
-  admin_id: number;
-}
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { api } from '../services/api';
+import { Room } from '../types';
 
 interface RoomListProps {
   rooms: Room[];
   onRoomClick?: (roomId: number) => void;
+  onEdit?: (room: Room) => void;
+  onAddUser?: (room: Room) => void;
 }
 
-export const RoomList: React.FC<RoomListProps> = ({ rooms, onRoomClick }) => {
+export const RoomList: React.FC<RoomListProps> = ({ 
+  rooms, 
+  onRoomClick,
+  onEdit,
+  onAddUser,
+}) => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const queryClient = useQueryClient();
+
+  const deleteMutation = useMutation({
+    mutationFn: (roomId: number) => api.delete(`/rooms/${roomId}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['rooms'] });
+    },
+  });
 
   const handleRoomClick = (roomId: number) => {
     if (onRoomClick) {
@@ -33,26 +53,86 @@ export const RoomList: React.FC<RoomListProps> = ({ rooms, onRoomClick }) => {
     }
   };
 
+  const handleEdit = (e: React.MouseEvent, room: Room) => {
+    e.stopPropagation();
+    if (onEdit) {
+      onEdit(room);
+    }
+  };
+
+  const handleAddUser = (e: React.MouseEvent, room: Room) => {
+    e.stopPropagation();
+    if (onAddUser) {
+      onAddUser(room);
+    }
+  };
+
+  const handleDelete = (e: React.MouseEvent, roomId: number) => {
+    e.stopPropagation();
+    if (window.confirm('Вы уверены, что хотите удалить эту комнату?')) {
+      deleteMutation.mutate(roomId);
+    }
+  };
+
   return (
     <List>
-      {rooms.map((room) => (
-        <ListItem
-          key={room.id}
-          onClick={() => handleRoomClick(room.id)}
-          sx={{ cursor: 'pointer' }}
-        >
-          <ListItemText
-            primary={room.name}
-            secondary={room.description}
-          />
-          <ListItemSecondaryAction>
-            {room.admin_id === user?.id && (
-              <Box sx={{ display: 'flex', gap: 1 }}>
-                {/* Здесь можно добавить кнопки для администратора */}
-              </Box>
-            )}
-          </ListItemSecondaryAction>
-        </ListItem>
+      {rooms.map((room, index) => (
+        <Grow in={true} timeout={500} key={room.id} style={{ transitionDelay: `${index * 100}ms` }}>
+          <ListItem
+            onClick={() => handleRoomClick(room.id)}
+            sx={{
+              cursor: 'pointer',
+              '&:hover': {
+                backgroundColor: 'action.hover',
+                transform: 'scale(1.01)',
+                transition: 'all 0.2s ease-in-out',
+              },
+              mb: 1,
+              borderRadius: 1,
+              boxShadow: 1,
+            }}
+          >
+            <ListItemText
+              primary={room.name}
+              secondary={room.description}
+            />
+            <ListItemSecondaryAction>
+              {room.admin_id === user?.id && (
+                <Fade in={true} timeout={500}>
+                  <Box sx={{ display: 'flex', gap: 1 }}>
+                    <Tooltip title="Редактировать комнату">
+                      <IconButton
+                        onClick={(e) => handleEdit(e, room)}
+                        size="small"
+                        color="primary"
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Добавить пользователя">
+                      <IconButton
+                        onClick={(e) => handleAddUser(e, room)}
+                        size="small"
+                        color="primary"
+                      >
+                        <PersonAddIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Удалить комнату">
+                      <IconButton
+                        onClick={(e) => handleDelete(e, room.id)}
+                        size="small"
+                        color="error"
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                </Fade>
+              )}
+            </ListItemSecondaryAction>
+          </ListItem>
+        </Grow>
       ))}
     </List>
   );
