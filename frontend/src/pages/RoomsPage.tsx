@@ -11,7 +11,7 @@ export const RoomsPage: React.FC = () => {
   const queryClient = useQueryClient();
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const [isAddUserDialogOpen, setIsAddUserDialogOpen] = useState(false);
-  const [userEmail, setUserEmail] = useState('');
+  const [username, setUsername] = useState('');
 
   const { data: roomsData, isLoading, error } = useQuery({
     queryKey: ['rooms'],
@@ -27,14 +27,14 @@ export const RoomsPage: React.FC = () => {
   });
 
   const addUserMutation = useMutation({
-    mutationFn: async ({ roomId, email }: { roomId: number; email: string }) => {
-      const response = await rooms.addUser(roomId, email);
+    mutationFn: async ({ roomId, username }: { roomId: number; username: string }) => {
+      const response = await rooms.addUser(roomId, username);
       return response.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['rooms'] });
       setIsAddUserDialogOpen(false);
-      setUserEmail('');
+      setUsername('');
     },
   });
 
@@ -48,8 +48,8 @@ export const RoomsPage: React.FC = () => {
   };
 
   const handleAddUserSubmit = () => {
-    if (selectedRoom && userEmail) {
-      addUserMutation.mutate({ roomId: selectedRoom.id, email: userEmail });
+    if (selectedRoom && username) {
+      addUserMutation.mutate({ roomId: selectedRoom.id, username });
     }
   };
 
@@ -103,11 +103,11 @@ export const RoomsPage: React.FC = () => {
           <TextField
             autoFocus
             margin="dense"
-            label="Email пользователя"
-            type="email"
+            label="Логин пользователя"
+            type="text"
             fullWidth
-            value={userEmail}
-            onChange={(e) => setUserEmail(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             error={addUserMutation.isError}
             helperText={addUserMutation.isError ? 'Ошибка при добавлении пользователя' : ''}
           />
@@ -116,7 +116,7 @@ export const RoomsPage: React.FC = () => {
           <Button onClick={() => setIsAddUserDialogOpen(false)}>Отмена</Button>
           <Button 
             onClick={handleAddUserSubmit}
-            disabled={addUserMutation.isPending || !userEmail}
+            disabled={addUserMutation.isPending || !username}
           >
             Добавить
           </Button>

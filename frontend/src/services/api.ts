@@ -73,8 +73,8 @@ export const rooms = {
   create: (data: Partial<Room>) => api.post<Room>('/room/create', data),
   update: (id: number, data: Partial<Room>) => api.put<Room>(`/room/${id}`, data),
   delete: (id: number) => api.delete(`/room/${id}`),
-  addUser: async (roomId: number, email: string) => {
-    const response = await api.put(`/room/add_user`, { email, room_id: roomId });
+  addUser: async (roomId: number, username: string) => {
+    const response = await api.put(`/room/add_user`, { username, room_id: roomId });
     return response.data;
   },
   removeUser: (roomId: number, userId: number) => api.put('/room/remove_user', { user_id: userId, room_id: roomId }),
