@@ -3,7 +3,7 @@ import { Box, Typography, Button } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { RoomList } from '../components/RoomList';
-import { rooms, auth } from '../services/api';
+import { rooms } from '../services/api';
 
 interface Room {
   id: number;
@@ -15,11 +15,6 @@ interface Room {
 export const RoomsPage: React.FC = () => {
   const navigate = useNavigate();
 
-  const { data: currentUser } = useQuery({
-    queryKey: ['currentUser'],
-    queryFn: () => auth.getCurrentUser().then(response => response.data),
-  });
-
   const { data: roomsData, isLoading, error } = useQuery({
     queryKey: ['rooms'],
     queryFn: async () => {
@@ -30,16 +25,6 @@ export const RoomsPage: React.FC = () => {
       }));
     },
   });
-
-  const handleDelete = (roomId: number) => {
-    if (window.confirm('Вы уверены, что хотите удалить эту комнату?')) {
-      rooms.delete(roomId);
-    }
-  };
-
-  const handleEdit = (roomId: number) => {
-    navigate(`/rooms/${roomId}/edit`);
-  };
 
   if (isLoading) {
     return <Typography>Загрузка...</Typography>;

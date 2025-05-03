@@ -7,6 +7,20 @@ import { UserList } from '../components/UserList';
 import { auth, files } from '../services/api';
 import { FileData } from '../types';
 
+interface Room {
+  id: number;
+  name: string;
+  description: string;
+  admin_id: number;
+  files: Array<{
+    id: number;
+    name: string;
+    size: number;
+    uploaded_at: string;
+    uploaded_by: number;
+  }>;
+}
+
 export const RoomPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const fileInputRef = useRef<HTMLInputElement>(null);

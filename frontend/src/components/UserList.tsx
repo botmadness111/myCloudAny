@@ -5,7 +5,6 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   IconButton,
-  Typography,
 } from '@mui/material';
 import { PersonRemove as PersonRemoveIcon } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
