@@ -1,13 +1,7 @@
 import React from 'react';
 import {
-  List,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
   Box,
   IconButton,
-  Tooltip,
-  Fade,
   Grow,
   Chip,
   Card,
@@ -21,7 +15,6 @@ import {
   People as PeopleIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../services/api';
 import { Room } from '../types';
@@ -42,7 +35,6 @@ export const RoomList: React.FC<RoomListProps> = ({
   showControls = true
 }) => {
   const navigate = useNavigate();
-  const { user } = useAuth();
   const queryClient = useQueryClient();
 
   const deleteMutation = useMutation({

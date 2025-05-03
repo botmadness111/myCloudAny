@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button, Alert, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Tabs, Tab, Divider } from '@mui/material';
+import { Box, Typography, Button, Alert, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Tabs, Tab } from '@mui/material';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { RoomList } from '../components/RoomList';
@@ -60,7 +60,7 @@ export const RoomsPage: React.FC = () => {
     navigate('/rooms/create');
   };
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
 
