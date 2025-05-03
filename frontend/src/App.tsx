@@ -11,8 +11,16 @@ import { RoomsPage } from './pages/RoomsPage';
 import { RoomPage } from './pages/RoomPage';
 import { CreateRoomPage } from './pages/CreateRoomPage';
 import { EditRoomPage } from './pages/EditRoomPage';
+import { useAuth } from './contexts/AuthContext';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const theme = createTheme({
   palette: {
@@ -21,8 +29,8 @@ const theme = createTheme({
 });
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const token = localStorage.getItem('token');
-  return token ? <>{children}</> : <Navigate to="/login" />;
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
 };
 
 function App() {
@@ -47,8 +55,8 @@ function App() {
               <Route index element={<Navigate to="/rooms" replace />} />
               <Route path="rooms" element={<RoomsPage />} />
               <Route path="rooms/create" element={<CreateRoomPage />} />
-              <Route path="rooms/:id" element={<RoomPage />} />
-              <Route path="rooms/:id/edit" element={<EditRoomPage />} />
+              <Route path="room/:id" element={<RoomPage />} />
+              <Route path="room/:id/edit" element={<EditRoomPage />} />
               <Route path="profile" element={<ProfilePage />} />
             </Route>
           </Routes>

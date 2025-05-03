@@ -3,9 +3,11 @@ import { Box, Button, TextField, Typography, Container } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../services/api';
 import { LoginData } from '../types';
+import { useAuth } from '../contexts/AuthContext';
 
 export const LoginForm: React.FC = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState<LoginData>({
     username: '',
     password: '',
@@ -24,6 +26,7 @@ export const LoginForm: React.FC = () => {
       console.log('Отправка данных для входа:', formData);
       const response = await auth.login(formData);
       console.log('Ответ от сервера:', response.data);
+      await login(response.data.access_token);
       navigate('/rooms');
     } catch (err: any) {
       console.error('Ошибка при входе:', err);

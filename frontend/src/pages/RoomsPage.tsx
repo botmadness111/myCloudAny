@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, Button, Alert } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { RoomList } from '../components/RoomList';
@@ -12,7 +12,9 @@ export const RoomsPage: React.FC = () => {
   const { data: roomsData, isLoading, error } = useQuery({
     queryKey: ['rooms'],
     queryFn: async () => {
+      console.log('Запрос списка комнат...');
       const response = await rooms.getAll();
+      console.log('Ответ от сервера:', response);
       return response.data.map((room: Room) => ({
         ...room,
         description: room.description || '',
@@ -21,15 +23,26 @@ export const RoomsPage: React.FC = () => {
   });
 
   if (isLoading) {
-    return <Typography>Загрузка...</Typography>;
+    return (
+      <Box sx={{ p: 3 }}>
+        <Typography variant="h6">Загрузка комнат...</Typography>
+      </Box>
+    );
   }
 
   if (error) {
-    return <Typography color="error">Ошибка при загрузке комнат</Typography>;
+    console.error('Ошибка при загрузке комнат:', error);
+    return (
+      <Box sx={{ p: 3 }}>
+        <Alert severity="error">
+          Ошибка при загрузке комнат: {error instanceof Error ? error.message : 'Неизвестная ошибка'}
+        </Alert>
+      </Box>
+    );
   }
 
   return (
-    <Box>
+    <Box sx={{ p: 3 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
         <Typography variant="h4">Комнаты</Typography>
         <Button
@@ -46,7 +59,9 @@ export const RoomsPage: React.FC = () => {
           onRoomClick={(roomId) => navigate(`/room/${roomId}`)}
         />
       ) : (
-        <Typography>У вас пока нет комнат</Typography>
+        <Alert severity="info">
+          У вас пока нет комнат. Создайте новую комнату, нажав на кнопку выше.
+        </Alert>
       )}
     </Box>
   );

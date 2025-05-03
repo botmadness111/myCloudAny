@@ -10,7 +10,7 @@ interface User {
 interface AuthContextType {
   isAuthenticated: boolean;
   user: User | null;
-  login: (token: string) => void;
+  login: (token: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -20,24 +20,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User | null>(null);
 
+  const fetchUser = async () => {
+    try {
+      const response = await auth.getCurrentUser();
+      setUser(response.data);
+      setIsAuthenticated(true);
+    } catch (error) {
+      console.error('Ошибка при получении данных пользователя:', error);
+      localStorage.removeItem('token');
+      setIsAuthenticated(false);
+      setUser(null);
+    }
+  };
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      setIsAuthenticated(true);
-      auth.getCurrentUser()
-        .then(response => setUser(response.data))
-        .catch(() => {
-          localStorage.removeItem('token');
-          setIsAuthenticated(false);
-        });
+      fetchUser();
     }
   }, []);
 
-  const login = (token: string) => {
+  const login = async (token: string) => {
     localStorage.setItem('token', token);
-    setIsAuthenticated(true);
-    auth.getCurrentUser()
-      .then(response => setUser(response.data));
+    await fetchUser();
   };
 
   const logout = () => {
