@@ -68,7 +68,7 @@ export const files = {
     });
   },
   delete: (roomId: number, fileId: number) => api.delete(`/room/${roomId}/files/${fileId}`),
-  download: (roomId: number, fileId: number) => 
+  download: (_roomId: number, fileId: number) => 
     api.get(`/room/download/${fileId}`, {
       responseType: 'blob',
       headers: {

@@ -3,8 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Box, Button, Typography, CircularProgress, Snackbar, Alert } from '@mui/material';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { FileList } from '../components/FileList';
-import { UserList } from '../components/UserList';
-import { auth, files } from '../services/api';
+import { files } from '../services/api';
 import { RoomDetailResponse } from '../types';
 
 export const RoomPage: React.FC = () => {
