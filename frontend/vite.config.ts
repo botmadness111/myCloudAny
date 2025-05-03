@@ -11,6 +11,12 @@ export default defineConfig({
   preview: {
     port: 4173,
     host: '0.0.0.0',
+    allowedHosts: [
+      'localhost',
+      '127.0.0.1',
+      'cloudanypython-1.onrender.com',
+      '*.onrender.com'
+    ],
   },
   build: {
     chunkSizeWarningLimit: 1000,
