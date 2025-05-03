@@ -19,15 +19,20 @@ export const LoginForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     try {
       console.log('Отправка данных для входа:', formData);
       const response = await auth.login(formData);
       console.log('Ответ от сервера:', response.data);
-      localStorage.setItem('token', response.data.access_token);
       navigate('/rooms');
-    } catch (err) {
+    } catch (err: any) {
       console.error('Ошибка при входе:', err);
-      setError('Неверное имя пользователя или пароль');
+      if (err.response) {
+        console.error('Детали ошибки:', err.response.data);
+        setError(err.response.data.detail || 'Ошибка при входе в систему');
+      } else {
+        setError('Не удалось подключиться к серверу');
+      }
     }
   };
 

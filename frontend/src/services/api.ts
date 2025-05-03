@@ -3,6 +3,7 @@ import { AuthResponse, Room, FileData } from '../types';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true, // Добавляем для работы с куками
 });
 
 // Интерцептор для добавления токена к запросам
@@ -29,7 +30,20 @@ api.interceptors.response.use(
 // Аутентификация
 export const auth = {
   login: async (data: { username: string; password: string }) => {
-    const response = await api.post<AuthResponse>('/token', data);
+    const formData = new URLSearchParams();
+    formData.append('username', data.username);
+    formData.append('password', data.password);
+
+    const response = await api.post<AuthResponse>('/token', formData, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+    
+    if (response.data.access_token) {
+      localStorage.setItem('token', response.data.access_token);
+    }
+    
     return response;
   },
   register: (data: { username: string; email: string; password: string }) => {

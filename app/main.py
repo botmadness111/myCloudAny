@@ -9,10 +9,13 @@ from app.database import init_db
 
 app = FastAPI(title="Cloudany")
 
+# Получаем разрешенные домены из переменных окружения
+CORS_ORIGINS = os.getenv("CORS_ORIGINS", "https://cloudanypython-1.onrender.com").split(",")
+
 # CORS настройки
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
