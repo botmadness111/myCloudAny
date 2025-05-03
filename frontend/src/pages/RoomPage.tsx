@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Box, Button, Typography, CircularProgress, Snackbar, Alert } from '@mui/material';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { FileList } from '../components/FileList';
-import { files } from '../services/api';
+import { files, auth } from '../services/api';
 import { RoomDetailResponse } from '../types';
 
 export const RoomPage: React.FC = () => {
@@ -15,7 +15,7 @@ export const RoomPage: React.FC = () => {
 
   const { data: currentUser } = useQuery({
     queryKey: ['currentUser'],
-    queryFn: () => auth.getCurrentUser().then(response => response.data),
+    queryFn: () => auth.getCurrentUser().then((response) => response.data),
   });
 
   const { data: roomData, isLoading, error } = useQuery({
