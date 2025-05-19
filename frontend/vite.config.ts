@@ -15,6 +15,7 @@ export default defineConfig({
       'localhost',
       '127.0.0.1',
       'cloudanypython-1.onrender.com',
+      'https://mycloudany.onrender.com',
       '*.onrender.com'
     ],
   },
