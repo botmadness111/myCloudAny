@@ -7,13 +7,13 @@ services:
       - "8000:8000"
     environment:
       - ENVIRONMENT=development
-      - DATABASE_URL=postgresql://cloudany:FQAMvoz1R2G9MKK2uLNxpIsCrbjHq4L6@dpg-d0anvjp5pdvs73bvkgk0-a.oregon-postgres.render.com/cloudany
+      - DATABASE_URL=postgresql://cloudanypg:JJaemvCpzM3p4PMN2vAcLCu2FL5PHwKY@dpg-d0vve73ipnbc738bigvg-a.oregon-postgres.render.com/cloudanypg
       - SECRET_KEY=09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7
       - ALGORITHM=HS256
       - ACCESS_TOKEN_EXPIRE_MINUTES=30
       - CORS_ORIGINS=https://mycloudany.onrender.com
     extra_hosts:
-      - "dpg-d0anvjp5pdvs73bvkgk0-a.oregon-postgres.render.com:172.17.0.1"
+      - "dpg-d0vve73ipnbc738bigvg-a.oregon-postgres.render.com:172.17.0.1"
 
   frontend:
     build: 

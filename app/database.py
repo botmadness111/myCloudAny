@@ -16,7 +16,7 @@ if os.getenv("ENVIRONMENT") != "production":
 # Получаем URL базы данных из переменных окружения
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "postgresql://cloudany:FQAMvoz1R2G9MKK2uLNxpIsCrbjHq4L6@dpg-d0anvjp5pdvs73bvkgk0-a.oregon-postgres.render.com/cloudany"  # URL для Render
+    "postgresql://cloudanypg:JJaemvCpzM3p4PMN2vAcLCu2FL5PHwKY@dpg-d0vve73ipnbc738bigvg-a.oregon-postgres.render.com/cloudanypg"  # URL для Render
 )
 
 # Если URL начинается с postgres://, заменяем на postgresql:// (для совместимости с SQLAlchemy)
